@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider"
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
+import { authOptions } from "@/libs/authOptions";
+import {getServerSession} from "next-auth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -48,11 +50,12 @@ export const metadata: Metadata = {
 // }
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body
@@ -66,7 +69,7 @@ export default function RootLayout({
         >
           <div className="min-h-screen flex flex-col">
             {/* Barre de navigation en haut */}
-            <NavBar />
+            <NavBar session={session} />
 
             <div className="flex flex-1">
               {/* Barre latérale */}
